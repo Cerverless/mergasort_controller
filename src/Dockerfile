@@ -9,4 +9,4 @@ FROM gcr.io/distroless/cc
 
 COPY --from=build-env /app/src/msc /app/
 WORKDIR /app
-CMD ["./msc]
+ENTRYPOINT ["/app/msc"]
