@@ -27,7 +27,7 @@
 #include "../include/ws.h"
 #include "messaging.h"
 
-#define PATH_PREFIX "jobs/"
+#define PATH_PREFIX "jobs_busy/"
 #define DATA_DELIMITER ";"
 #define MAX_RESULT_MSG 20
 
