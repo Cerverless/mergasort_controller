@@ -1,14 +1,14 @@
 registry_server_fqdn: ghcr.io
 
 apps:
-  - name: ms-cervice
-    image: ghcr.io/cerverless/mergesort:nolibc
+  - name: ms-controller
+    image: ghcr.io/cerverless/mergasort_controller:main
     registry_account: jrb-s2c-github
-    namespace: cervices
+    namespace: ms
     replicas: 1
     application_properties:
       application.properties: |
-        cervice: mergesort
+        cervice: mergasort_controller
 ingress:
   host: www.demo.io
   rules:
@@ -18,7 +18,7 @@ ingress:
       service_path: /
 
 namespaces:
-  - name: cervices    
+  - name: ms  
 
 pre_k8s_cmds:
   - kubectl get nodes
