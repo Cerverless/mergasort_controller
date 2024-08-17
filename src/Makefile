@@ -1,7 +1,7 @@
 all: msc
 
 
-msc: msc.o
+msc: msc.o msc_functions.o
 	$(Q)$(CC) $(CFLAGS) $^ -o $@ -L../lib -lws -pthread
 
 #msc: msc.o  #libmylib.a is the dependency for the executable

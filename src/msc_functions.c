@@ -1,4 +1,22 @@
-#include "msc.h"
+/*
+ * =====================================================================================
+ *
+ *       Filename:  msc_functions.c
+ *
+ *    Description: Functions used by msc application 
+ *
+ *        Version:  1.0
+ *        Created:  08/17/2024 06:05:43 PM
+ *       Revision:  none
+ *       Compiler:  gcc
+ *
+ *         Author:  Jan-Rudolph Buhrmann (JRB), 
+ *        Company:  S2C Consulting
+ *
+ * =====================================================================================
+ */
+
+#include "msc_functions.h"
 
 /**
  * @brief Called when a client connects to the server.
@@ -7,7 +25,6 @@
  * in order to send messages and retrieve informations about the
  * client.
  */
-/*
 void onopen(ws_cli_conn_t *client)
 {
 	char *cli, *port;
@@ -17,15 +34,14 @@ void onopen(ws_cli_conn_t *client)
 	printf("Connection opened, addr: %s, port: %s\n", cli, port);
 #endif
 }
-*/
+
 /**
  * @brief Called when a client disconnects to the server.
  *
  * @param client Client connection. The @p client parameter is used
  * in order to send messages and retrieve informations about the
  * client.
- i*/
-/*
+ */
 void onclose(ws_cli_conn_t *client)
 {
 	char *cli;
@@ -44,10 +60,10 @@ void write_to_file (const char* path, const char* word)
 	fprintf(fptr, word);
 	fprintf(fptr, "\n");
 
-	fclose(fptr); 
+	fclose(fptr);
 	return ;
-}		
-*/
+}
+
 /**
  * @brief Called when a client connects to the server.
  *
@@ -62,7 +78,6 @@ void write_to_file (const char* path, const char* word)
  *
  * @param type Message type.
  */
-/*
 void onmessage(ws_cli_conn_t *client,
 		const unsigned char *msg, uint64_t size, int type)
 {
@@ -79,18 +94,25 @@ void onmessage(ws_cli_conn_t *client,
 	printf("I received the following: message: %d, job_nr: %s, word_nr: %s, word: %s\n",
 			message_nr, job_nr, word_nr, word);
 #endif
-	if (message_nr == MSG_ADD_WORD) { 
+	if (message_nr == MSG_ADD_WORD) {
 		char file_path[20];  // TODO calculate length of file_path based on max amounts of elements that can be sorted
 		sprintf(file_path, "%s%s_1_%s", PATH_PREFIX, job_nr, word_nr);
 		write_to_file(file_path, word);
-		sprintf(result, "%d", RESULT_OK); 
+		sprintf(result, "%d", RESULT_OK);
 	} else if (message_nr == MSG_GET_STATUS) {
-
-		sprintf(result, "%d;%s", JOB_DONE); 
+		// TODO more sophistication required between BUSY and ERROR? 
+		int files_being_processed = files_per_job(PATH_PREFIX, job_nr);
+                if (files_being_processed == 0) {
+                        sprintf(result, "%d;%s", JOB_ERROR);
+		} else if (files_being_processed == 1) {
+			sprintf(result, "%d;%s", JOB_DONE);
+		} else {            
+			sprintf(result, "%d;%s", JOB_BUSY);
+		}
 	} else {
-		sprintf(result, "%d", RESULT_UNKOWN_MESSAGE); 
+		sprintf(result, "%d", RESULT_UNKOWN_MESSAGE);
 	}
-*/
+
 
 	/**
 	 * Mimicks the same frame type received and re-send it again
@@ -107,47 +129,12 @@ void onmessage(ws_cli_conn_t *client,
 	 *   ws_sendframe_bin()
 	 *   ws_sendframe_bin_bcast()
 	 */
-/*
 	ws_sendframe_bcast(8080, result, strlen(result), type);
-}
-*/
-
-/**
- * @brief Main routine.
- *
- * @note After invoking @ref ws_socket, this routine never returns,
- * unless if invoked from a different thread.
- */
-int main(void)
-{
-	ws_socket(&(struct ws_server){
-			/*
-			 * Bind host:
-			 * localhost -> localhost/127.0.0.1
-			 * 0.0.0.0   -> global IPv4
-			 * ::        -> global IPv4+IPv6 (DualStack)
-			 */
-			.host = "0.0.0.0",
-			.port = 8080,
-			.thread_loop   = 0,
-			.timeout_ms    = 1000,
-			.evs.onopen    = &onopen,
-			.evs.onclose   = &onclose,
-			.evs.onmessage = &onmessage
-			});
-
-	/*
-	 * If you want to execute code past ws_socket(), set
-	 * .thread_loop to '1'.
-	 */
-
-	return (0);
 }
 
 /**
  * Returns amount of files under processing for a job
  */
-/*
 int files_per_job (const char* path, const char* job_id)
 {
 	int result = 0;
@@ -164,5 +151,6 @@ int files_per_job (const char* path, const char* job_id)
 		closedir(d);
 	}
 	return result;
-}*/		
+}
 /* -----  end of function files_per_job  ----- */
+

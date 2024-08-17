@@ -19,16 +19,6 @@
 #ifndef MSC_H
 #define MSC_H
 
-#include <stdbool.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <string.h>
-#include "../include/ws.h"
-#include "messaging.h"
-
-#define PATH_PREFIX "jobs_busy/"
-#define DATA_DELIMITER ";"
-#define MAX_RESULT_MSG 20
+#include "msc_functions.h"
 
 #endif /* MSC_H */
