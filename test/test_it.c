@@ -33,7 +33,6 @@ int main ( int argc, char *argv[] )
 void test_files_per_job (  )
 {
 	ok(files_per_job ("test_dir", "12") == 2, "Test that it counts correctly when files match");
-	printf("############### %d\n", files_per_job ("test_dir", "12"));
 	ok(files_per_job ("test_dir", "13") == 0, "Test that it counts correctly when no files match");
  
 	return ;

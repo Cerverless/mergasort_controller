@@ -100,14 +100,15 @@ void onmessage(ws_cli_conn_t *client,
 		write_to_file(file_path, word);
 		sprintf(result, "%d", RESULT_OK);
 	} else if (message_nr == MSG_GET_STATUS) {
+		struct stat sb;  
 		// TODO more sophistication required between BUSY and ERROR? 
-		int files_being_processed = files_per_job(PATH_PREFIX, job_nr);
-                if (files_being_processed == 0) {
-                        sprintf(result, "%d;%s", JOB_ERROR);
-		} else if (files_being_processed == 1) {
-			sprintf(result, "%d;%s", JOB_DONE);
+		int files_being_processed = files_per_job(PATH_PREFIX, job_nr, &sb);
+		if (files_being_processed == 0) {
+			sprintf(result, "%d", JOB_ERROR);
+		} else if (files_being_processed == 1) {              
+			sprintf(result, "%d;%ld", JOB_DONE, sb.st_mtime);
 		} else {            
-			sprintf(result, "%d;%s", JOB_BUSY);
+			sprintf(result, "%d", JOB_BUSY);
 		}
 	} else {
 		sprintf(result, "%d", RESULT_UNKOWN_MESSAGE);
@@ -135,19 +136,28 @@ void onmessage(ws_cli_conn_t *client,
 /**
  * Returns amount of files under processing for a job
  */
-int files_per_job (const char* path, const char* job_id)
+int files_per_job (const char* path, const char* job_id, struct stat* p_stat_buf)
 {
+	const char* file_name;   
 	int result = 0;
 	DIR *d;
 	struct dirent *dir;
 	d = opendir(path);
 	if (d) {
 		while ((dir = readdir(d)) != NULL) {
-			printf("%s\n", dir->d_name);
-			if (strstr(dir->d_name, job_id) == dir->d_name) {
+			file_name = dir->d_name; 
+			printf("%s\n", file_name);
+			if (strstr(file_name, job_id) == file_name) {
 				result++;
+				char path[30];
+				sprintf(path, "%s%s", PATH_PREFIX, file_name);
+
+				if (lstat(path, p_stat_buf) == -1) {
+					perror("lstat");
+				}
 			}
 		}
+
 		closedir(d);
 	}
 	return result;

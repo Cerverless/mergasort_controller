@@ -28,6 +28,7 @@
 #include "../include/ws.h"
 #include "messaging.h"
 #include <dirent.h>
+#include <sys/stat.h>
 
 #define PATH_PREFIX "jobs_busy/"
 #define DATA_DELIMITER ";"
