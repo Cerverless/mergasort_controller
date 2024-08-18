@@ -147,7 +147,7 @@ int files_per_job (const char* path, const char* job_id, struct stat* p_stat_buf
 		while ((dir = readdir(d)) != NULL) {
 			file_name = dir->d_name; 
 			printf("%s\n", file_name);
-			if (strstr(file_name, job_id) == file_name) {
+			if (strcmp(strtok(file_name, "_"), job_id) == 0) {
 				result++;
 				char path[30];
 				sprintf(path, "%s%s", PATH_PREFIX, file_name);
