@@ -51,12 +51,38 @@ void onclose(ws_cli_conn_t *client)
 #endif
 }
 
-void write_to_file (const char* path, const char* word)
+/*
+ * ===  FUNCTION  ======================================================================
+ *         Name:  to_upper
+ *  Description:  Turns string into all upper case letters
+ * =====================================================================================
+ */
+void to_upper (char* string)
+{
+        for(int i=0; ;i++){
+                if(string[i] == '\0')
+                        return;
+                if((string[i]>96) && (string[i]<123)) {
+                        /*
+                         * Each lowercase letter is 32 + uppercase equivalent.
+                         * This means simply flipping the bit at position 5
+                         * (counting from least significant bit at position 0) inverts the case of a letter.
+                         */
+                        string[i] = string[i]^0x20;
+                }
+        }
+
+        return ;
+}
+
+void write_to_file (const char* path, char* word)
 {
 	FILE *fptr;
 
 	fptr = fopen(path, "w");
-
+ 
+        to_upper(word);
+ 
 	fprintf(fptr, word);
 	fprintf(fptr, "\n");
 
