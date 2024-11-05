@@ -75,6 +75,37 @@ void to_upper (char* string)
         return ;
 }
 
+/**
+ * Returns amount of files under processing for a job
+ */
+int files_per_job (const char* path, const char* job_id, struct stat* p_stat_buf)
+{
+	const char* file_name;
+	int result = 0;
+	DIR *d;
+	struct dirent *dir;
+	d = opendir(path);
+	if (d) {
+		while ((dir = readdir(d)) != NULL) {
+			file_name = dir->d_name;
+			printf("%s\n", file_name);
+			if (strcmp(strtok(file_name, "_"), job_id) == 0) {
+				result++;
+				char path[30];
+				sprintf(path, "%s%s", PATH_PREFIX, file_name);
+
+				if (stat(path, p_stat_buf) == -1) {
+					perror("lstat");
+				}
+			}
+		}
+
+		closedir(d);
+	}
+	return result;
+}
+/* -----  end of function files_per_job  ----- */
+
 void write_to_file (const char* path, char* word)
 {
 	FILE *fptr;
@@ -159,34 +190,4 @@ void onmessage(ws_cli_conn_t *client,
 	ws_sendframe_bcast(8080, result, strlen(result), type);
 }
 
-/**
- * Returns amount of files under processing for a job
- */
-int files_per_job (const char* path, const char* job_id, struct stat* p_stat_buf)
-{
-	const char* file_name;   
-	int result = 0;
-	DIR *d;
-	struct dirent *dir;
-	d = opendir(path);
-	if (d) {
-		while ((dir = readdir(d)) != NULL) {
-			file_name = dir->d_name; 
-			printf("%s\n", file_name);
-			if (strcmp(strtok(file_name, "_"), job_id) == 0) {
-				result++;
-				char path[30];
-				sprintf(path, "%s%s", PATH_PREFIX, file_name);
-
-				if (lstat(path, p_stat_buf) == -1) {
-					perror("lstat");
-				}
-			}
-		}
-
-		closedir(d);
-	}
-	return result;
-}
-/* -----  end of function files_per_job  ----- */
 
