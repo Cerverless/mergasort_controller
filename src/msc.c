@@ -8,26 +8,29 @@
  */
 int main(void)
 {
-	ws_socket(&(struct ws_server){
-			/*
-			 * Bind host:
-			 * localhost -> localhost/127.0.0.1
-			 * 0.0.0.0   -> global IPv4
-			 * ::        -> global IPv4+IPv6 (DualStack)
-			 */
-			.host = "0.0.0.0",
-			.port = 8080,
-			.thread_loop   = 0,
-			.timeout_ms    = 1000,
-			.evs.onopen    = &onopen,
-			.evs.onclose   = &onclose,
-			.evs.onmessage = &onmessage
-			});
+
+	//@@@@ ws_socket(&(struct ws_server){
+	// 		/*
+	// 		 * Bind host:
+	// 		 * localhost -> localhost/127.0.0.1
+	// 		 * 0.0.0.0   -> global IPv4
+	// 		 * ::        -> global IPv4+IPv6 (DualStack)
+	// 		 */
+	// 		.host = "0.0.0.0",
+	// 		.port = 8080,
+	// 		.thread_loop   = 0,
+	// 		.timeout_ms    = 1000,
+	// 		.evs.onopen    = &onopen,
+	// 		.evs.onclose   = &onclose,
+	// 		.evs.onmessage = &onmessage
+	// 		});
 
 	/*
 	 * If you want to execute code past ws_socket(), set
 	 * .thread_loop to '1'.
 	 */
+char* msg = "1;1;WAT;5";
+	onmessage(NULL, msg, 0, MSG_START_JOB);
 
 	return (0);
 }

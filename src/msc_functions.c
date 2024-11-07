@@ -27,8 +27,8 @@
  */
 void onopen(ws_cli_conn_t *client) {
     char *cli, *port;
-    cli = ws_getaddress(client);
-    port = ws_getport(client);
+    //@@@@ cli = ws_getaddress(client);
+    //@@@ port = ws_getport(client);
 #ifdef DEBUG
     printf("Connection opened, addr: %s, port: %s\n", cli, port);
 #endif
@@ -43,7 +43,7 @@ void onopen(ws_cli_conn_t *client) {
  */
 void onclose(ws_cli_conn_t *client) {
     char *cli;
-    cli = ws_getaddress(client);
+    //@@@@ cli = ws_getaddress(client);
 #ifdef DEBUG
     printf("Connection closed, addr: %s\n", cli);
 #endif
@@ -135,10 +135,12 @@ void write_to_file(const char *path, char *word) {
 void onmessage(ws_cli_conn_t *client,
                const unsigned char *msg, uint64_t size, int type) {
     char *cli;
-    cli = ws_getaddress(client);
+    // @@@@ cli = ws_getaddress(client);
     char result[MAX_RESULT_MSG];
-
-    int message_nr = atoi(strtok(msg, DATA_DELIMITER));
+printf("%s\n", msg);
+    char *mnr = strtok("1;1;WAT;5", DATA_DELIMITER);
+printf("%s\n", mnr);
+    int message_nr = atoi(mnr);
     char *job_nr = strtok(NULL, DATA_DELIMITER);
     char *word_nr = strtok(NULL, DATA_DELIMITER);
     char *word = strtok(NULL, DATA_DELIMITER);
@@ -203,5 +205,5 @@ void onmessage(ws_cli_conn_t *client,
      *   ws_sendframe_bin()
      *   ws_sendframe_bin_bcast()
      */
-    ws_sendframe_bcast(8080, result, strlen(result), type);
+    //@@@@@ ws_sendframe_bcast(8080, result, strlen(result), type);
 }
