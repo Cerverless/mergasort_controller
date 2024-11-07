@@ -15,4 +15,4 @@ add_executable(mergasort_controller1
     src/msc_functions.c
     src/msc_functions.h)
 
-target_link_libraries(mergasort_controller1 ../lib/libws.a)
+target_link_libraries(mergasort_controller1 /root/mergasort_controller/lib/libws.a)
