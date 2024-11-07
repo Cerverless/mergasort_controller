@@ -23,6 +23,7 @@
 // Messages
 #define MSG_ADD_WORD 0
 #define MSG_GET_STATUS 1
+#define MSG_START_JOB 2
 
 // Result codes
 #define RESULT_OK 0

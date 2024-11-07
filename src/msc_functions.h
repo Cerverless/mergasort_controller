@@ -30,7 +30,13 @@
 #include <dirent.h>
 #include <sys/stat.h>
 
-#define PATH_PREFIX "jobs_busy/"
+#if (defined(_WIN32) || defined(__WIN32__))
+#define mkdir(A, B) mkdir(A)
+#endif
+
+#define itoa(A, B) sprintf(B, "%d", A)
+
+#define PATH_PREFIX "jobs_busy"
 #define DATA_DELIMITER ";"
 #define MAX_RESULT_MSG 20
 
