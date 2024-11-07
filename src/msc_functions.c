@@ -165,7 +165,7 @@ void onmessage(ws_cli_conn_t *client,
         char file_path[20]; // TODO calculate length of file_path based on max amounts of elements that can be sorted
         int base = atoi(word_nr) * atoi(lock_size);
         char baseChar[10];
-        itoa(base, baseChar, 10);
+        itoa(base, baseChar);
         printf("######### IIIIIIIIIIIIIIIIIII #################### %d %s\n", base, baseChar);
         sprintf(file_path, "%s/%s/%s/%s", PATH_PREFIX, job_nr, "1", baseChar);
         mkdir(file_path, 0700);
